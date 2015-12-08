@@ -1,0 +1,38 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    byebug (8.2.1)
+    google_places (0.32.0)
+      httparty (~> 0.13.1)
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
+    json (1.8.3)
+    mini_portile2 (2.0.0)
+    multi_xml (0.5.5)
+    nokogiri (1.6.7)
+      mini_portile2 (~> 2.0.0.rc2)
+    rack (1.6.4)
+    rack-protection (1.5.3)
+      rack
+    roo (2.2.0)
+      nokogiri (~> 1)
+      rubyzip (~> 1.1, < 2.0.0)
+    rubyzip (1.1.7)
+    sinatra (1.4.6)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (>= 1.3, < 3)
+    tilt (2.0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  byebug
+  google_places
+  roo
+  sinatra
+
+BUNDLED WITH
+   1.10.6
