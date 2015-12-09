@@ -11,7 +11,8 @@ get '/' do
   path_to_spreadsheet = 'spreadsheets/ProspectList_GooglePlaces.xlsx'
   xlsx = Roo::Spreadsheet.open(path_to_spreadsheet)
 
-  xlsx.each_row_streaming(offset: 1, max_rows: 1) do |row|
+  # Add max_rows: N to limit the number
+  xlsx.each_row_streaming(offset: 0) do |row|
     restName = row[1].to_s == "NULL" ? "" : row[1]
     restAddress = row[11].to_s == "NULL" ? "" : row[11]
     restCity = row[12].to_s == "NULL" ? "" : row[12]
@@ -26,12 +27,26 @@ get '/' do
 
     page = Nokogiri::HTML.parse(browser.html)
 
-    rest_description = page.css('._mr._Wfc.vk_gy').text
-    rest_price = page.css('._N1d').text
+
+    rest_price_and_short_desc = page.css('._mr._Wfc.vk_gy').text
+
+    if rest_price_and_short_desc.match("·")
+      strArr = rest_price_and_short_desc.split("·")
+      if(strArr.length > 0)
+        price = strArr[0]
+        shortDesc  = strArr[1]
+      end
+    else
+      shortDesc = rest_price_and_short_desc
+    end
+
+    price = price || ""
+    rest_description = page.css('._N1d').text
     rest_hours_open = page.css('._YMh').text
+    restCopy = shortDesc.gsub(/\,/,"") + " - " + rest_description.gsub(/\,/,"")
 
-    @csvList << [restName.to_s, rest_description, rest_price, rest_hours_open]
-
+    @csvList << [restName.to_s, restCopy, price, rest_hours_open]
+    puts [restName.to_s, restCopy, price, rest_hours_open]
     browser.close
   end
 
